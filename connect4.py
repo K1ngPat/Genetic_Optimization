@@ -7,6 +7,11 @@ class Connect4():
         self.winner = 0 # 0 for incomplete game, 1 for player 1, 2 for player 2, 3 for tie
         self.moves_played = 0
 
+    def reset(self):
+        self.board = [[0 for _ in range(7)] for _ in range(6)]
+        self.winner = 0 # 0 for incomplete game, 1 for player 1, 2 for player 2, 3 for tie
+        self.moves_played = 0
+
 
     def check_this(self, row: int, column: int): #Checks whether specified position is resulting in a win for either side, returns 1 and 2 for respective players, else 0 
         pl_ch = self.board[row][column]
@@ -171,6 +176,11 @@ class Connect4():
         while pat:
 
             pat = False
+
+            self.reset()
+
+            if turns_played == 0:
+                break
 
             for _ in range(turns_played):
                 
