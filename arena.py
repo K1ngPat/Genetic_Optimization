@@ -1,17 +1,18 @@
 import random as rand
-import tqdm.tqdm as TQDM
+from tqdm import tqdm as TQDM
 
 class Arena():
     """
     What we expect of model_class: 
-    An __init__ that takes a list of parameters 
+    An __init__ that takes a list of parameters
+    A function choose_move(self, board, is_first) that can analyse a board and return column (0 to 6) to play in
     A function crossover(self, other_model) that can crossover between 2 different instances of model_class and return a 3rd and 4th 
     A function mutate(self) that can mutate a model and return mutant. Preferably does high probability of small mutations and low probability of huge mutations
         Note: The methods of crossover and mutation, whether discrete or intermediate, and with what values of crossover_d, are considered attributes of the inhabitants, not the environment. hence, they are left out of this class.
 
     What we expect of game:
     An __init__ with the option of slightly random beginning positions
-    A method play(self, agent1, agent2, standard_start = True) which plays out a game between agent 1, agent 2 and return 1, 2 or 3 if player 1 win, player 2 win or tie respectively
+    A method play(self, agent1, agent2, turns_played = 0) which plays out a game between agent 1, agent 2 and return 1, 2 or 3 if player 1 win, player 2 win or tie respectively
     """
 
     def __init__(self, model_class, game, model_params = [], initial_pop = 300, max_pop = 500, crossover_rate = 0.1, mutation_rate = 0.07, battle_stochastic = 0.1):
@@ -36,9 +37,8 @@ class Arena():
                 return
 
             fight_pair = rand.choices(range(len(self.inhabitants)), k=2) # indices of the 2 inhabitants we make fight
-            # TODO: Make them fight, stochastically make stronger survive
             fight_game = self.game()
-            res = fight_game.play(self.inhabitants[fight_pair[0]], self.inhabitants[fight_pair[1]])
+            res = fight_game.play(self.inhabitants[fight_pair[0]], self.inhabitants[fight_pair[1]]) #TODO use random init of game
             brr = rand.random()
             if res == 3:
                 if brr>0.5:
