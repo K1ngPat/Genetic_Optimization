@@ -36,7 +36,7 @@ class Network(nn.Module):
         return x
     
     def get_parameters(self):
-        return self.named_parameters
+        return [param for _, param in self.named_parameters()]
     
     # TODO: set value for column as -1 in output vector if column is filled
 
