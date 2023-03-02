@@ -35,6 +35,9 @@ class Network(nn.Module):
         x = self.sequential(x)
         return x
     
+    def get_parameters(self):
+        return self.named_parameters
+    
     # TODO: set value for column as -1 in output vector if column is filled
 
 
