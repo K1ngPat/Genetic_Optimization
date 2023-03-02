@@ -37,9 +37,8 @@ class Network(nn.Module):
     
     def get_parameters(self):
         p = [param for _, param in self.named_parameters()]
-        num_params = [self.num_layers[i] * self.num_layers[i+1] for i in range(len(self.num_layers) - 1)]
         params = [list(np.array(pa.tolist()).flatten()) for pa in p]
-        params = my_1d_list = [item for sublist in params for item in sublist]
+        params = [item for sublist in params for item in sublist]
         return params
     
     # TODO: set value for column as -1 in output vector if column is filled
