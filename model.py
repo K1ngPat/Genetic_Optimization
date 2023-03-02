@@ -38,6 +38,7 @@ class Network(nn.Module):
     def get_parameters(self):
         p = [param for _, param in self.named_parameters()]
         params = [list(np.array(pa.tolist()).flatten()) for pa in p]
+        params = params[2:-1]
         params = [item for sublist in params for item in sublist]
         return params
     
