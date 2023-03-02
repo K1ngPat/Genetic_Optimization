@@ -34,7 +34,12 @@ class Network(nn.Module):
 
         # loading model weights if passed
         if(weights != None):
-            self.load_state_dict(torch.load(BytesIO(weights)))
+            state_dict = torch.load(BytesIO(weights))
+            new_state_dict = {}
+            for k, v in state_dict.items():
+                new_key = "sequential." + k
+                new_state_dict[new_key] = v
+            self.load_state_dict(new_state_dict)
 
     def forward(self, x):
         x = self.sequential(x)
