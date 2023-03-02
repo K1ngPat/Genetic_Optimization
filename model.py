@@ -14,7 +14,7 @@ class Network(nn.Module):
         super(Network, self).__init__()
 
         layers = [
-            nn.Conv2d(in_channels=1, out_channels=1, kernel_size=3, stride=0),
+            nn.Conv2d(in_channels=1, out_channels=1, kernel_size=2, stride=0),
             activation_fn(),
             nn.Flatten(),
             nn.Linear((input_dim[0]-2) * (input_dim[1]-2), hidden_layers[0]),
