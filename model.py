@@ -13,11 +13,13 @@ class Network(nn.Module):
     def __init__(self, input_dim, hidden_layers, output_dim, activation_fn=nn.ReLU):
         super(Network, self).__init__()
 
+        kernel_size = 2
+
         layers = [
-            nn.Conv2d(in_channels=1, out_channels=1, kernel_size=2, stride=0),
+            nn.Conv2d(in_channels=1, out_channels=1, kernel_size=kernel_size, stride=0),
             activation_fn(),
             nn.Flatten(),
-            nn.Linear((input_dim[0]-2) * (input_dim[1]-2), hidden_layers[0]),
+            nn.Linear((input_dim[0]-kernel_size+1) * (input_dim[1]-kernel_size+1), hidden_layers[0]),
             activation_fn()
         ]
 
