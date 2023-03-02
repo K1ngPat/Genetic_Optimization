@@ -15,7 +15,7 @@ class Arena():
     A method play(self, agent1, agent2, turns_played = 0) which plays out a game between agent 1, agent 2 and return 1, 2 or 3 if player 1 win, player 2 win or tie respectively
     """
 
-    def __init__(self, model_class, game, model_params = [], initial_pop = 300, max_pop = 500, crossover_rate = 0.1, mutation_rate = 0.07, battle_stochastic = 0.1):
+    def __init__(self, model_class, game, model_params = None, initial_pop = 300, max_pop = 500, crossover_rate = 0.1, mutation_rate = 0.07, battle_stochastic = 0.1):
         self.inhabitants = []
         self.game = game
         self.model_class = model_class

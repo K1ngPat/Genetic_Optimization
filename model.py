@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
+from io import BytesIO
 
 # constants for connect-4
 R = 6
@@ -10,7 +11,7 @@ HIDDEN_LAYERS = [25, 25]
 OUTPUT_DIM = C
 
 class Network(nn.Module):
-    def __init__(self, model_params=None, input_dim=INPUT_DIM, hidden_layers=HIDDEN_LAYERS, output_dim=C, activation_fn=nn.ReLU):
+    def __init__(self, weights=None, input_dim=INPUT_DIM, hidden_layers=HIDDEN_LAYERS, output_dim=C, activation_fn=nn.ReLU):
         super(Network, self).__init__()
 
         kernel_size = 2
@@ -31,8 +32,9 @@ class Network(nn.Module):
         
         self.sequential = nn.Sequential(*layers)
 
-        if(not model_params):
-            self.load_state_dict(model_params)
+        # loading model weights if passed
+        if(weights != None):
+            self.load_state_dict(torch.load(BytesIO(weights)))
 
     def forward(self, x):
         x = self.sequential(x)
@@ -46,9 +48,10 @@ class Network(nn.Module):
         return params'''
     
     def get_weights(self):
-        return self.get_weights()
-    
-    # TODO: set value for column as -1 in output vector if column is filled
+        buffer = BytesIO()
+        torch.save(self.sequential.state_dict(), buffer)
+        weights = buffer.getvalue()
+        return weights
 
 
 
