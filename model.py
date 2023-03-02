@@ -10,7 +10,7 @@ HIDDEN_LAYERS = [25, 25]
 OUTPUT_DIM = C
 
 class Network(nn.Module):
-    def __init__(self, input_dim, hidden_layers, output_dim, activation_fn=nn.ReLU):
+    def __init__(self, model_params=None, input_dim=INPUT_DIM, hidden_layers=HIDDEN_LAYERS, output_dim=C, activation_fn=nn.ReLU):
         super(Network, self).__init__()
 
         kernel_size = 2
@@ -31,16 +31,22 @@ class Network(nn.Module):
         
         self.sequential = nn.Sequential(*layers)
 
+        if(not model_params):
+            self.load_state_dict(model_params)
+
     def forward(self, x):
         x = self.sequential(x)
         return x
     
-    def get_parameters(self):
+    '''def get_parameters(self):
         p = [param for _, param in self.named_parameters()]
         params = [list(np.array(pa.tolist()).flatten()) for pa in p]
         params = params[2:-1]
         params = [item for sublist in params for item in sublist]
-        return params
+        return params'''
+    
+    def get_weights(self):
+        return self.get_weights()
     
     # TODO: set value for column as -1 in output vector if column is filled
 
