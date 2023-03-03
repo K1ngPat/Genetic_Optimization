@@ -11,7 +11,7 @@ HIDDEN_LAYERS = [25, 25]
 OUTPUT_DIM = C
 
 class Network(nn.Module):
-    def __init__(self, weights=None, input_dim=INPUT_DIM, hidden_layers=HIDDEN_LAYERS, output_dim=C, activation_fn=nn.ReLU):
+    def __init__(self, weights1=None, weights2=None, mult1=1, mult2=1, input_dim=INPUT_DIM, hidden_layers=HIDDEN_LAYERS, output_dim=OUTPUT_DIM, activation_fn=nn.ReLU):
         super(Network, self).__init__()
 
         kernel_size = 2
@@ -33,12 +33,21 @@ class Network(nn.Module):
         self.sequential = nn.Sequential(*layers)
 
         # loading model weights if passed
-        if(weights != None):
-            state_dict = torch.load(BytesIO(weights))
+        if weights1 != None and weights2 != None:
+            state_dict1 = torch.load(BytesIO(weights1))
+            state_dict2 = torch.load(BytesIO(weights2))
+            new_state_dict = {}
+            for k, v in state_dict1.items():
+                new_key = "sequential." + k
+                new_state_dict[new_key] = v*mult1 + state_dict2[k]*mult2
+            self.load_state_dict(new_state_dict)
+
+        elif weights1 != None:
+            state_dict = torch.load(BytesIO(weights1))
             new_state_dict = {}
             for k, v in state_dict.items():
                 new_key = "sequential." + k
-                new_state_dict[new_key] = v
+                new_state_dict[new_key] = v*mult1
             self.load_state_dict(new_state_dict)
 
     def forward(self, x):
@@ -58,7 +67,9 @@ class Network(nn.Module):
         weights = buffer.getvalue()
         return weights
 
-
+# create new Network from parent networks A and B with genetic ratio 1:9 using:
+# C = Network(weights1=A.get_weights(), mult1=0.1, weights2=B.get_weights(), mult2=0.9)
+# (A.get_weights() will be model_params in this case)
 
         
         
